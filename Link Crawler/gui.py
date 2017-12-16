@@ -1,5 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox
+from domain import *
+from main import *
 
 
 class App:
@@ -38,7 +40,7 @@ class App:
         self.url_entry = tk.Entry(self.top_frame)
         self.url_entry.grid(row=1, column=1)
 
-        self.button1 = tk.Button(self.top_frame, text="Grab")
+        self.button1 = tk.Button(self.top_frame, text="Grab", command=lambda: grab(self))
         self.button1.grid(row=2, columnspan=2, pady=50)
 
     @staticmethod
@@ -54,9 +56,25 @@ class App:
         return str(self.url_entry.get())
 
 
+def grab(app):
+    project_name = app.get_project_name()
+    homepage = app.get_homepage()
+    domain_name = get_domain_name(homepage)
+    queued_file = project_name + '/queue.txt'
+    crawled_file = project_name + '/crawled.txt'
+    no_of_threads = 8
+    app.status["text"] = 'Grabbing....'
+    Spider(project_name, homepage, domain_name)
+    create_workers(no_of_threads)
+    crawl(queued_file)
+    app.status["text"] = 'Grabbed.'
+
+
 def main():
     root = tk.Tk()
+    # HiDPI Scaling
     root.tk.call('tk', 'scaling', 3.0)
+    
     root.title('Link Grabber')
     root.option_add("*Font", "15")
     root.option_add('*Dialog.msg.font', 'Helvetica 10')
@@ -64,7 +82,7 @@ def main():
     root.geometry("700x350")
     root.resizable(0, 0)
 
-    App(root)
+    app = App(root)
 
     root.mainloop()
 
