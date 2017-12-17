@@ -70,7 +70,9 @@ class App:
         self.url_entry = tk.Entry(self.top_frame, fg="blue", width=30, textvariable=self.stringvar2)
         self.url_entry.grid(row=1, column=1)
 
-        self.button1 = tk.Button(self.top_frame, text="Grab", fg="green", state="disabled", command=lambda: grab(self))
+        self.btn_text = tk.StringVar()
+        self.button1 = tk.Button(self.top_frame, textvariable=self.btn_text, fg="green", state="disabled", command=lambda: grab(self))
+        self.btn_text.set("Grab")
         self.button1.grid(row=2, columnspan=2, pady=50)
 
         self.text = tkst.ScrolledText(self.top_frame, height=12, width=52, relief="sunken", bg="grey", fg="white")
@@ -103,6 +105,8 @@ class App:
 
 
 def grab(app):
+    app.btn_text.set("Grabbing")
+    app.button1.config(state="disabled")
     project_name = app.get_project_name()
     homepage = app.get_homepage()
     domain_name = get_domain_name(homepage)
@@ -115,7 +119,8 @@ def grab(app):
     crawl(queued_file)
     print('Completed')
     app.status["text"] = 'Completed.'
-
+    app.btn_text.set("Grab")
+    app.button1.config(state="normal")
 
 def main():
     root = tk.Tk()
