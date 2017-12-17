@@ -1,12 +1,37 @@
 import tkinter as tk
 import tkinter.messagebox
+import tkinter.scrolledtext as tkst
+import sys
+import validators
 from domain import *
 from main import *
+
+
+class StdRedirector:
+    def __init__(self, text_widget):
+        self.text_space = text_widget
+
+    def write(self, string):
+        self.text_space.config(state=tk.NORMAL)
+        self.text_space.insert("end", string)
+        self.text_space.see("end")
+        self.text_space.config(state=tk.DISABLED)
 
 
 class App:
 
     def __init__(self, master):
+        # HiDPI Scaling
+        master.tk.call('tk', 'scaling', 3.0)
+
+        # configuration
+        master.title('Link Grabber')
+        master.option_add("*Font", "15")
+        master.option_add('*Dialog.msg.font', 'Helvetica 10')
+
+        master.geometry("1100x850")
+        master.resizable(0, 0)
+
         # **** Menu Bar ****
         self.menu = tk.Menu(master)
         master.config(menu=self.menu)
@@ -23,6 +48,11 @@ class App:
         self.bottom_frame = tk.Frame(master)
         self.bottom_frame.pack(side="bottom", fill="x")
 
+        self.stringvar1 = tk.StringVar(self.top_frame)
+        self.stringvar2 = tk.StringVar(self.top_frame)
+
+        self.stringvar1.trace("w", self.enable)
+        self.stringvar2.trace("w", self.enable)
         # **** Status Bar ****
         self.status = tk.Label(self.bottom_frame, text="Ready to grab links...", bd=1, relief="sunken", anchor="w")
         self.status.pack(fill="x")
@@ -31,17 +61,24 @@ class App:
         self.name_label = tk.Label(self.top_frame, text="Project Name:")
         self.name_label.grid(row=0, column=0, sticky="e", pady=30, padx=10)
 
-        self.name_entry = tk.Entry(self.top_frame)
+        self.name_entry = tk.Entry(self.top_frame, width=30, textvariable=self.stringvar1)
         self.name_entry.grid(row=0, column=1, pady=30)
 
         self.url_label = tk.Label(self.top_frame, text="Homepage:")
         self.url_label.grid(row=1, column=0, sticky="e", padx=10)
 
-        self.url_entry = tk.Entry(self.top_frame)
+        self.url_entry = tk.Entry(self.top_frame, fg="blue", width=30, textvariable=self.stringvar2)
         self.url_entry.grid(row=1, column=1)
 
-        self.button1 = tk.Button(self.top_frame, text="Grab", command=lambda: grab(self))
+        self.button1 = tk.Button(self.top_frame, text="Grab", fg="green", state="disabled", command=lambda: grab(self))
         self.button1.grid(row=2, columnspan=2, pady=50)
+
+        self.text = tkst.ScrolledText(self.top_frame, height=12, width=52, relief="sunken", bg="grey", fg="white")
+        self.text.grid(row=3, columnspan=2, padx=25)
+        self.text.insert(tk.END, 'Queued = 0 | Grabbed = 0\n')
+
+        sys.stdout = StdRedirector(self.text)
+        sys.stderr = StdRedirector(self.text)
 
     @staticmethod
     def show_about():
@@ -55,6 +92,15 @@ class App:
     def get_homepage(self):
         return str(self.url_entry.get())
 
+    # enable a button if both the Entry fields are not empty
+    def enable(self, *args):
+        x = self.stringvar1.get()
+        y = self.stringvar2.get()
+        if x and validators.url(y):
+            self.button1.config(state='normal')
+        else:
+            self.button1.config(state='disabled')
+
 
 def grab(app):
     project_name = app.get_project_name()
@@ -67,20 +113,12 @@ def grab(app):
     Spider(project_name, homepage, domain_name)
     create_workers(no_of_threads)
     crawl(queued_file)
-    app.status["text"] = 'Grabbed.'
+    print('Completed')
+    app.status["text"] = 'Completed.'
 
 
 def main():
     root = tk.Tk()
-    # HiDPI Scaling
-    root.tk.call('tk', 'scaling', 3.0)
-    
-    root.title('Link Grabber')
-    root.option_add("*Font", "15")
-    root.option_add('*Dialog.msg.font', 'Helvetica 10')
-
-    root.geometry("700x350")
-    root.resizable(0, 0)
 
     app = App(root)
 
