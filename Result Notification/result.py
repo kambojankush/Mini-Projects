@@ -37,7 +37,15 @@ def get_notification_date(link):
     date_col = table_row.contents[7]
     font_tag = date_col.find('font')
     date_text = font_tag.text
-    return conv_datetime(date_text)
+    if len(font_tag.text) == 10:
+        return conv_datetime(date_text)
+    if date_text == '-----------':
+        return conv_datetime(DEFAULT_DATE)
+    if ')' in date_text:
+        date_text.replace(')', '')
+        return conv_datetime(date_text[-10:])
+    return conv_datetime(date_text[-10:])
+
 
 
 def create_file(path):
@@ -88,7 +96,9 @@ def main():
             else:
                 break
     else:
-        write_last_date(date)
+        generate_notification('DTU Results', 'No new notification!')
+
+    write_last_date(date)
 
 if __name__ == '__main__':
     main()
