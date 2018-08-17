@@ -7,3 +7,6 @@ Multi-threaded website crawler to grab links
 
 #### 2. [Result Notification](Result%20Notification):
 Notify whenever there are new result notifications for [DTU](http://dtu.ac.in/) students.
+
+#### 3. [Excel Parser](Excel%20Parser):
+Scrape all excel files in a given directory and copy rows containing given data to output file.
