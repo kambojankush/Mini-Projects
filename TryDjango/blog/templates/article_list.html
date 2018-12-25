@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Active articles:</h1>
+    {% for instance in object_list %}
+        {% if instance.active %}
+            <p>{{ instance.id }}- <a href={{ instance.get_absolute_url }}>{{ instance.title }}</a></p>
+        {% endif %}
+    {% endfor %}
+
+    <h1>Previously active articles:</h1>
+    {% for instance in object_list %}
+        {% if not instance.active %}
+            <p>{{ instance.id }}- <a href={{ instance.get_absolute_url }}>{{ instance.title }}</p>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

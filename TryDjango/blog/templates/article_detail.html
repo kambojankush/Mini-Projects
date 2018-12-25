@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if object.active %}
+        <h1>Article: {{ object.title }}</h1>
+        <p>{{ object.content }}</p>
+    {% else %}
+        Currently Inactive Article
+    {% endif %}
+{% endblock %}
