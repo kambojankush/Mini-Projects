@@ -18,3 +18,6 @@ Implementing apps from django tutorial
 Web app to share files
 
 <img src="https://github.com/kambojankush/Mini-Projects/blob/master/FileShare/ss.PNG"  />
+
+#### 6. [Synchronization](Synchronization)
+Implementing basic synchronization primitives.
