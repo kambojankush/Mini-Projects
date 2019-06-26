@@ -3,33 +3,27 @@ package com.demo.calcengine;
 public class Main {
 
     public static void main(String[] args) {
-        double[] leftVals = {100.0d, 90.0d, 120.0d, 11.0d};
-        double[] rightVals = {50.0d, 10.0d, 10.0d, 3.0d};
-        char[] opCodes = {'d', 'a', 's', 'm'};
-        double[] results = new double[opCodes.length];
-
-        for (int i = 0; i < opCodes.length; i++) {
-            switch (opCodes[i]) {
-                case 'a':
-                    results[i] = leftVals[i] + rightVals[i];
-                    break;
-                case 's':
-                    results[i] = leftVals[i] - rightVals[i];
-                    break;
-                case 'm': 
-                    results[i] = leftVals[i] * rightVals[i];
-                    break;
-                case 'd': 
-                    results[i] = rightVals[i] == 0.0d ? 0.0d : leftVals[i] / rightVals[i];
-                    break;
-                default:
-                    results[i] = 0.0d;
-            }
-        }
-
-        for (double resultVal : results) {
+        
+        MathEquation[] equations = new MathEquation[4];
+        equations[0] = create(100.0d, 50.0d, 'd');
+        equations[1] = create(90.0d, 10.0d, 'a');
+        equations[2] = create(120.0d, 10.0d, 's');
+        equations[3] = create(11.0d, 3.0d, 'm');
+        
+        for (MathEquation equation : equations) {
+            equation.execute();
             System.out.print("result = ");
-            System.out.println(resultVal);
+            System.out.println(equation.result);
         }
+    }
+
+    public static MathEquation create(double leftVal, double rightVal, char opCode) {
+
+        MathEquation equation = new MathEquation();
+        equation.leftVal = leftVal;
+        equation.rightVal = rightVal;
+        equation.opCode = opCode;
+
+        return equation;
     }
 }
