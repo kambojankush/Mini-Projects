@@ -3,7 +3,7 @@ package com.demo.calcengine;
 public class MathEquation {
 
 	private double leftVal, rightVal, result;
-	private char opCode;
+	private char opCode = 'a';
 
 	public double getLeftVal() {return leftVal;}
 	public void setLeftVal(double leftVal) {this.leftVal = leftVal;}
@@ -13,6 +13,16 @@ public class MathEquation {
 	public void setOpCode(char opCode) {this.opCode = opCode;}
 
 	public double getResult() {return result;}
+
+	public MathEquation() {}
+	public MathEquation(char opCode) {
+		this.opCode = opCode;
+	}
+	public MathEquation(double leftVal, double rightVal, char opCode) {
+		this(opCode);
+		this.leftVal = leftVal;
+		this.rightVal = rightVal;
+	}
 
 	public void execute() {
 		switch (opCode) {
