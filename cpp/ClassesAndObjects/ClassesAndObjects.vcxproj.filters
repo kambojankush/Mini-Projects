@@ -32,5 +32,8 @@
     <ClInclude Include="Tweeter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="status.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
