@@ -4,6 +4,26 @@ public class Main {
 
     public static void main(String[] args) {
         
+        // useMathEquation();
+        // useInheritance();
+
+        String[] statements = {
+            "Add 100.0 20.0",
+            "Subtract 100.0d 20.0",
+            "Divide 100.0d 0.0d",
+            "Multiply 11.0 3.0"
+        };
+
+        CalculateHelper helper = new CalculateHelper();
+
+        for (String statement : statements) {
+            helper.process(statement);
+            System.out.println(helper);
+        }
+    }
+
+    static void useMathEquation() {
+
         MathEquation[] equations = new MathEquation[4];
         equations[0] = new MathEquation(100.0d, 50.0d, 'd');
         equations[1] = new MathEquation(90.0d, 10.0d, 'a');
@@ -34,6 +54,9 @@ public class Main {
 
         System.out.print("result = ");
         System.out.println(overloadEquation.getResult());
+    }
+
+    static void useInheritance() {
 
         System.out.println();
         System.out.println("With Inheritance: ");
