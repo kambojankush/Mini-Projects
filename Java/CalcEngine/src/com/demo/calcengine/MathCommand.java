@@ -1,6 +1,6 @@
 package com.demo.calcengine;
 
-public enum MathCommand {
+enum MathCommand {
 	Add,
 	Subtract,
 	Divide,
