@@ -8,6 +8,9 @@ public class Main {
         // useInheritance();
 
         String[] statements = {
+            "Add 1.0",
+            "Add huehue 2.0",
+            "AddXX 10.0 50.0",
             "Add 100.0 20.0",
             "Subtract 100.0d 20.0",
             "Divide 100.0d 0.0d",
@@ -16,9 +19,15 @@ public class Main {
 
         CalculateHelper helper = new CalculateHelper();
 
-        for (String statement : statements) {
-            helper.process(statement);
-            System.out.println(helper);
+        for (String statement : statements) { 
+            try {
+                helper.process(statement);
+                System.out.println(helper);
+            } catch (InvalidStatementException e) {
+                System.out.println(e.getMessage());
+                if (e.getCause() != null)
+                    System.out.println("Original exception: " + e.getCause());
+            }
         }
     }
 
